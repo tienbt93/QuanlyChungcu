@@ -28,6 +28,7 @@ public class MyConnect {
     private Statement stm;
     private PreparedStatement psm;
     private boolean isServer=false;
+    public static MyConnect myConnect;
 
     public MyConnect() {
         try {
@@ -38,6 +39,11 @@ public class MyConnect {
         } catch (SQLException ex) {
             Logger.getLogger(MyConnect.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public static MyConnect getInstance(){
+        if(myConnect==null)
+            myConnect=new MyConnect();
+        return myConnect;
     }
 
     public MyConnect(String Url,String exec) {
