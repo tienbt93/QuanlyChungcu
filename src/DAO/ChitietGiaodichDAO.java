@@ -6,22 +6,128 @@
 package DAO;
 
 import Interface.InterfaceDAO;
-import java.util.List;
+import Model.Canho;
+import Model.ChitietGiaodich;
+import Model.Giaodich;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author PTIT
  */
-public class ChitietGiaodichDAO extends InterfaceDAO{
+public class ChitietGiaodichDAO extends InterfaceDAO {
+
+    public ChitietGiaodichDAO() {
+    }
 
     @Override
     public Object add(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (ob instanceof ChitietGiaodich) {
+            ChitietGiaodich chitietGiaodich = (ChitietGiaodich) ob;
+            String sql = "INSERT INTO [dbo].[chitiet_chitietGiaodich]\n"
+                    + "           ([id_chitietGiaodich]\n"
+                    + "           ,[id_canho])"
+                    + "     VALUES(?,?)";
+            try {
+                PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
+                ps.setInt(1, chitietGiaodich.getGiaodich().getIdGiaodich());
+                ps.setInt(2, chitietGiaodich.getCanho().getIdCanho());
+                return ps.executeUpdate() > 0;
+            } catch (SQLException ex) {
+                Logger.getLogger(ChitietGiaodichDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    public Object delete(ChitietGiaodich chitietGiaodich) {
+        String sql = "delete from [dbo].[chitiet_giaodich] where id_chitietGiaodich=? and id_canho = ?";
+        try {
+            PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
+            ps.setInt(1, chitietGiaodich.getGiaodich().getIdGiaodich());
+            ps.setInt(2, chitietGiaodich.getCanho().getIdCanho());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(ChitietGiaodichDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public Object update(Object ob) {
+        if (ob instanceof ChitietGiaodich) {
+            ChitietGiaodich chitietGiaodich = (ChitietGiaodich) ob;
+            String sql = "UPDATE [dbo].[chitiet_giaodich]\n"
+                    + "   SET [id_giaodich] = ? \n"
+                    + "      ,[id_canho] = ? "
+                    + " WHERE id_chitiet_giaodich=? and id_canho =?";
+            try {
+                PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
+                ps.setInt(1, chitietGiaodich.getGiaodich().getIdGiaodich());
+                ps.setInt(2, chitietGiaodich.getCanho().getIdCanho());
+                ps.setInt(3, chitietGiaodich.getGiaodich().getIdGiaodich());
+                ps.setInt(4, chitietGiaodich.getCanho().getIdCanho());
+                return 0 <= ps.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(ChitietGiaodichDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Object getAll() {
+        ArrayList<ChitietGiaodich> arr = null;
+        String sql = "select * from chitiet_giaodich";
+        ResultSet rs = myConnect.executeQuery(sql);
+        GiaodichDAO giaodichDAO = new GiaodichDAO();
+        CanhoDAO canhoDAO = new CanhoDAO();
+        if (rs != null) {
+            arr = new ArrayList<>();
+            try {
+                ChitietGiaodich chitietGiaodich = null;
+                while (rs.next()) {
+                    chitietGiaodich = new ChitietGiaodich();
+                    chitietGiaodich.setGiaodich((Giaodich) giaodichDAO.getId(rs.getInt(1)));
+                    chitietGiaodich.setCanho((Canho) canhoDAO.getId(rs.getShort(2)));
+                    arr.add(chitietGiaodich);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ChitietGiaodichDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return arr;
     }
 
     @Override
     public Object getId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ChitietGiaodich chitietGiaodich = null;
+        String sql = "select * from chitietGiaodich where id_chitietGiaodich=" + id;
+        ResultSet rs = myConnect.executeQuery(sql);
+        GiaodichDAO giaodichDAO = new GiaodichDAO();
+        CanhoDAO canhoDAO = new CanhoDAO();
+
+        try {
+            if (rs.next()) {
+                chitietGiaodich = new ChitietGiaodich();
+                chitietGiaodich.setGiaodich((Giaodich) giaodichDAO.getId(rs.getInt(1)));
+                chitietGiaodich.setCanho((Canho) canhoDAO.getId(rs.getShort(2)));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ChitietGiaodichDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return chitietGiaodich;
     }
 
     @Override
@@ -29,14 +135,4 @@ public class ChitietGiaodichDAO extends InterfaceDAO{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public Object update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Object> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }

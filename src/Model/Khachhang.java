@@ -5,6 +5,8 @@
  */
 package Model;
 
+import java.sql.Date;
+
 /**
  *
  * @author PTIT
@@ -14,7 +16,7 @@ public class Khachhang {
     private String tenKhachhang;
     private String diachi;
     private String sdt;
-    private String ngaysinh;
+    private Date ngaysinh;
     private String email;
     private String cmnd;
     private double tongtienGiaodich;
@@ -24,7 +26,7 @@ public class Khachhang {
     public Khachhang() {
     }
 
-    public Khachhang(int idKhachhang, String tenKhachhang, String diachi, String sdt, String ngaysinh, String email, String cmnd, double tongtienGiaodich, String mota, short gioitinh) {
+    public Khachhang(int idKhachhang, String tenKhachhang, String diachi, String sdt, Date ngaysinh, String email, String cmnd, double tongtienGiaodich, String mota, short gioitinh) {
         this.idKhachhang = idKhachhang;
         this.tenKhachhang = tenKhachhang;
         this.diachi = diachi;
@@ -69,11 +71,11 @@ public class Khachhang {
         this.sdt = sdt;
     }
 
-    public String getNgaysinh() {
+    public Date getNgaysinh() {
         return ngaysinh;
     }
 
-    public void setNgaysinh(String ngaysinh) {
+    public void setNgaysinh(Date ngaysinh) {
         this.ngaysinh = ngaysinh;
     }
 

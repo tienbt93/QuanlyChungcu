@@ -6,7 +6,14 @@
 package DAO;
 
 import Interface.InterfaceDAO;
-import java.util.List;
+import Model.Chungcu;
+import Model.Toanha;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,29 +21,133 @@ import java.util.List;
  */
 public class ChungcuDAO extends InterfaceDAO {
 
-    @Override
-    public Object add(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ChungcuDAO() {
     }
 
     @Override
-    public Object getId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object add(Object ob) {
+        if (ob instanceof Chungcu) {
+            Chungcu chungcu = (Chungcu) ob;
+            String sql = "INSERT INTO [dbo].[chungcu]\n"
+                    + "           ([ten_chungcu]\n"
+                    + "           ,[so_toanha]\n"
+                    + "           ,[tong_dientich]\n"
+                    + "           ,[diachi]\n"
+                    + "           ,[chu_dautu]\n"
+                    + "           ,[mota])"
+                    + "     VALUES(?,?,?,?,?,?)";
+            try {
+                PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
+                ps.setNString(1, chungcu.getTenChungcu());
+                ps.setInt(2, chungcu.getSoToanha());
+                ps.setInt(3, chungcu.getTongDientich());
+                ps.setNString(4, chungcu.getDiachi());
+                ps.setNString(5, chungcu.getChuDautu());
+                ps.setString(6, chungcu.getMota());
+                return ps.executeUpdate() > 0;
+            } catch (SQLException ex) {
+                Logger.getLogger(ChungcuDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            return false;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public Object delete(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "delete from [dbo].[chungcu] where id_chungcu=?";
+        try {
+            PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(ChungcuDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     @Override
     public Object update(Object ob) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (ob instanceof Chungcu) {
+            Chungcu chungcu = (Chungcu) ob;
+            String sql = "UPDATE [dbo].[chungcu]\n"
+                    + "   SET [ten_chungcu] = ?\n"
+                    + "      ,[so_toanha] = ?\n"
+                    + "      ,[tong_dientich] = ?\n"
+                    + "      ,[diachi] = ?\n"
+                    + "      ,[chu_dautu] = ?\n"
+                    + "      ,[mota] = ?"
+                    + " WHERE id_chungcu=? ";
+            try {
+                PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
+                ps.setNString(1, chungcu.getTenChungcu());
+                ps.setInt(2, chungcu.getSoToanha());
+                ps.setInt(3, chungcu.getTongDientich());
+                ps.setNString(4, chungcu.getDiachi());
+                ps.setNString(5, chungcu.getChuDautu());
+                ps.setString(6, chungcu.getMota());
+                ps.setInt(7, chungcu.getIdChungcu());
+                return 0 <= ps.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(ChungcuDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
     }
 
     @Override
-    public List<Object> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object getAll() {
+        ArrayList<Chungcu> arr = null;
+        String sql = "select * from Chungcu";
+        ResultSet rs = myConnect.executeQuery(sql);
+        ToanhaDAO toanhaDAO = new ToanhaDAO();
+        if (rs != null) {
+            arr = new ArrayList<>();
+            try {
+                Chungcu chungcu = null;
+                while (rs.next()) {
+                    chungcu = new Chungcu();
+                    chungcu.setIdChungcu(rs.getInt(1));
+                    chungcu.setTenChungcu((rs.getString(2)));
+                    chungcu.setSoToanha(rs.getInt(3));
+                    chungcu.setTongDientich(rs.getInt(4));
+                    chungcu.setDiachi(rs.getString(5));
+                    chungcu.setChuDautu(rs.getString(6));
+                    chungcu.setMota(rs.getNString(7));
+                    arr.add(chungcu);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ChungcuDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return arr;
     }
-    
+
+    @Override
+    public Object getId(int id) {
+        Chungcu chungcu = null;
+        String sql = "select * from chungcu where id_chungcu=" + id;
+        ResultSet rs = myConnect.executeQuery(sql);
+        ToanhaDAO toanhaDAO = new ToanhaDAO();
+        try {
+            if (rs.next()) {
+                chungcu = new Chungcu();
+                chungcu.setIdChungcu(rs.getInt(1));
+                chungcu.setTenChungcu((rs.getString(2)));
+                chungcu.setSoToanha(rs.getInt(3));
+                chungcu.setTongDientich(rs.getInt(4));
+                chungcu.setDiachi(rs.getString(5));
+                chungcu.setChuDautu(rs.getString(6));
+                chungcu.setMota(rs.getNString(7));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ChungcuDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return chungcu;
+    }
+
 }
