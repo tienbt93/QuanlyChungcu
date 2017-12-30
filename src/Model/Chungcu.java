@@ -6,6 +6,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  *
@@ -98,6 +99,16 @@ public class Chungcu {
     public void setListToanha(ArrayList<Toanha> listToanha) {
         this.listToanha = listToanha;
     }
-    
+    public Vector<String> getObj(){
+        Vector<String> vt= new Vector<>();
+        vt.add(idChungcu+"");
+        vt.add(tenChungcu);
+        vt.add(soToanha+"");
+        vt.add(tongDientich+"");
+        vt.add(diachi);
+        vt.add(chuDautu);
+        vt.add(mota);
+        return vt;
+    }
     
 }

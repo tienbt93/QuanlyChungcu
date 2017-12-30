@@ -117,7 +117,7 @@ public class ToanhaDAO extends InterfaceDAO {
     @Override
     public Object getAll() {
         ArrayList<Toanha> arr = null;
-        String sql = "select * from Toanha";
+        String sql = "select * from toanha";
         ResultSet rs = myConnect.executeQuery(sql);
         ChungcuDAO chungcuDAO = new ChungcuDAO();
         if (rs != null) {
