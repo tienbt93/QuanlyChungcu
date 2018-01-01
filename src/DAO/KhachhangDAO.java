@@ -27,7 +27,7 @@ public class KhachhangDAO extends InterfaceDAO {
     public Object add(Object ob) {
         if (ob instanceof Khachhang) {
             Khachhang khachhang = (Khachhang) ob;
-            String sql = "INSERT INTO [dbo].[khachhang]\n"
+            String sql = "INSERT INTO [QL_Chungcu].[dbo].[khachhang]\n"
                     + "           ([hoten]\n"
                     + "           ,[diachi]\n"
                     + "           ,[sdt]\n"
@@ -62,7 +62,7 @@ public class KhachhangDAO extends InterfaceDAO {
 
     @Override
     public Object delete(int id) {
-        String sql = "delete from [dbo].[khachhang] where id_khachhang=?";
+        String sql = "delete from [QL_Chungcu].[dbo].[khachhang] where id_khachhang=?";
         try {
             PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
             ps.setInt(1, id);
@@ -77,7 +77,7 @@ public class KhachhangDAO extends InterfaceDAO {
     public Object update(Object ob) {
         if (ob instanceof Khachhang) {
             Khachhang khachhang = (Khachhang) ob;
-            String sql = "UPDATE [dbo].[khachhang]\n"
+            String sql = "UPDATE [QL_Chungcu].[dbo].[khachhang]\n"
                     + "   SET [hoten] = ?\n"
                     + "      ,[diachi] = ?\n"
                     + "      ,[sdt] = ?\n"
@@ -111,7 +111,7 @@ public class KhachhangDAO extends InterfaceDAO {
     @Override
     public Object getAll() {
         ArrayList<Khachhang> arr = null;
-        String sql = "select * from khachhang";
+        String sql = "select * from [QL_Chungcu].[dbo].[khachhang]";
         ResultSet rs = myConnect.executeQuery(sql);
         ToanhaDAO toanhaDAO = new ToanhaDAO();
         if (rs != null) {
@@ -142,7 +142,7 @@ public class KhachhangDAO extends InterfaceDAO {
     @Override
     public Object getId(int id) {
         Khachhang khachhang = null;
-        String sql = "select * from khachhang where id_khachhang=" + id;
+        String sql = "select * from [QL_Chungcu].[dbo].[khachhang] where id_khachhang=" + id;
         ResultSet rs = myConnect.executeQuery(sql);
         ToanhaDAO toanhaDAO = new ToanhaDAO();
         try {

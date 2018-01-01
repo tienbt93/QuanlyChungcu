@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,7 +28,7 @@ public class ToanhaDAO extends InterfaceDAO {
     public Object add(Object ob) {
         if (ob instanceof Toanha) {
             Toanha toanha = (Toanha) ob;
-            String sql = "INSERT INTO [dbo].[toanha]\n"
+            String sql = "INSERT INTO [QL_Chungcu].[dbo].[toanha]\n"
                     + "           ([ten_toanha]\n"
                     + "           ,[diachi]\n"
                     + "           ,[sdt_quanly]\n"
@@ -66,7 +65,7 @@ public class ToanhaDAO extends InterfaceDAO {
 
     @Override
     public Object delete(int id) {
-        String sql = "delete from [dbo].[toanha] where id_toanha=?";
+        String sql = "delete from [QL_Chungcu].[dbo].[toanha] where id_toanha=?";
         try {
             PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
             ps.setInt(1, id);
@@ -81,7 +80,7 @@ public class ToanhaDAO extends InterfaceDAO {
     public Object update(Object ob) {
         if (ob instanceof Toanha) {
             Toanha toanha = (Toanha) ob;
-            String sql = "UPDATE [dbo].[toanha]\n"
+            String sql = "UPDATE [QL_Chungcu].[dbo].[toanha]\n"
                     + "   SET [ten_toanha] = ?\n"
                     + "      ,[diachi] = ?\n"
                     + "      ,[sdt_quanly] = ?\n"
@@ -117,7 +116,7 @@ public class ToanhaDAO extends InterfaceDAO {
     @Override
     public Object getAll() {
         ArrayList<Toanha> arr = null;
-        String sql = "select * from toanha";
+        String sql = "select * from [QL_Chungcu].[dbo].[toanha]";
         ResultSet rs = myConnect.executeQuery(sql);
         ChungcuDAO chungcuDAO = new ChungcuDAO();
         if (rs != null) {
@@ -149,7 +148,7 @@ public class ToanhaDAO extends InterfaceDAO {
     @Override
     public Object getId(int id) {
         Toanha toanha = null;
-        String sql = "select * from toanha where id_toanha=" + id;
+        String sql = "select * from [QL_Chungcu].[dbo].[toanha] where id_toanha=" + id;
         ResultSet rs = myConnect.executeQuery(sql);
         ChungcuDAO chungcuDAO = new ChungcuDAO();
         try {

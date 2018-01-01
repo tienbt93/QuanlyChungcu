@@ -29,7 +29,7 @@ public class GiaodichDAO extends InterfaceDAO {
     public Object add(Object ob) {
         if (ob instanceof Giaodich) {
             Giaodich giaodich = (Giaodich) ob;
-            String sql = "INSERT INTO [dbo].[giaodich]\n"
+            String sql = "INSERT INTO [QL_Chungcu].[dbo].[giaodich]\n"
                     + "           ([loai_giaodich]\n"
                     + "           ,[soluong]\n"
                     + "           ,[tong_gia]\n"
@@ -60,7 +60,7 @@ public class GiaodichDAO extends InterfaceDAO {
 
     @Override
     public Object delete(int id) {
-        String sql = "delete from [dbo].[giaodich] where id_giaodich=?";
+        String sql = "delete from [QL_Chungcu].[dbo].[giaodich] where id_giaodich=?";
         try {
             PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
             ps.setInt(1, id);
@@ -75,7 +75,7 @@ public class GiaodichDAO extends InterfaceDAO {
     public Object update(Object ob) {
         if (ob instanceof Giaodich) {
             Giaodich giaodich = (Giaodich) ob;
-            String sql = "UPDATE [dbo].[giaodich]\n"
+            String sql = "UPDATE [QL_Chungcu].[dbo].[giaodich] \n"
                     + "   SET [loai_giaodich] = ? \n"
                     + "      ,[soluong] = ? \n"
                     + "      ,[tong_gia] = ? \n"
@@ -105,7 +105,7 @@ public class GiaodichDAO extends InterfaceDAO {
     @Override
     public Object getAll() {
         ArrayList<Giaodich> arr = null;
-        String sql = "select * from giaodich";
+        String sql = "select * from [QL_Chungcu].[dbo].[giaodich]";
         ResultSet rs = myConnect.executeQuery(sql);
         KhachhangDAO khachhangDAO = new KhachhangDAO();
         NhanvienDAO nhanvienDAO = new NhanvienDAO();
@@ -135,7 +135,7 @@ public class GiaodichDAO extends InterfaceDAO {
     @Override
     public Object getId(int id) {
         Giaodich giaodich = null;
-        String sql = "select * from giaodich where id_giaodich=" + id;
+        String sql = "select * from [QL_Chungcu].[dbo].[giaodich] where id_giaodich=" + id;
         ResultSet rs = myConnect.executeQuery(sql);
         KhachhangDAO khachhangDAO = new KhachhangDAO();
         NhanvienDAO nhanvienDAO = new NhanvienDAO();

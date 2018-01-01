@@ -15,8 +15,14 @@ import DAO.ToanhaDAO;
 import Model.Canho;
 import Model.Chungcu;
 import Model.Toanha;
+import java.sql.Date;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import utils.Common;
 
 /**
  *
@@ -37,7 +43,8 @@ public class QLMain extends javax.swing.JFrame {
     private ArrayList<Chungcu> dsChungcu = new ArrayList<>();
     private ArrayList<Toanha> dsToanha = new ArrayList<>();
     private ArrayList<Canho> dsCanho = new ArrayList<>();
-    
+    private int indexChungcu = -1,indexToanha=-1;
+
     public QLMain() {
         initComponents();
         loadTblChungcu();
@@ -55,11 +62,14 @@ public class QLMain extends javax.swing.JFrame {
         dsChungcu = (ArrayList<Chungcu>) chungcuDAO.getAll();
         String[] title = {"Mã Chung cư", "Tên Chung cư", "Số tòa nhà", "Tổng diện tích", "Địa chỉ", "Chủ đầu tư", "Mô tả"};
         DefaultTableModel model = new DefaultTableModel(null, title);
+        cbChungcu.removeAllItems();
         for (int i = 0; i < dsChungcu.size(); i++) {
             model.addRow(dsChungcu.get(i).getObj());
+            cbChungcu.addItem(dsChungcu.get(i).getTenChungcu().trim());
         }
         tblChungcu.setModel(model);
     }
+
     public void loadTblSearchKH() {
 //        dsChungcu = (ArrayList<Chungcu>) chungcuDAO.getAll();
         String[] title = {"Mã KH", "Tên KH"};
@@ -69,24 +79,27 @@ public class QLMain extends javax.swing.JFrame {
 //        }
 //        tblSearchKH.setModel(model);
     }
+
     public void loadTblChitietGD() {
 //        dsChungcu = (ArrayList<Chungcu>) chungcuDAO.getAll();
-        String[] title = {"Mã GD", "Tên KH", "Loại giao dịch", "Số lượng", "Ngày lập", "Nhân viên lập","Tổng số tiền", "Mô tả"};
+        String[] title = {"Mã GD", "Tên KH", "Loại giao dịch", "Số lượng", "Ngày lập", "Nhân viên lập", "Tổng số tiền", "Mô tả"};
         DefaultTableModel model = new DefaultTableModel(null, title);
 //        for (int i = 0; i < dsChungcu.size(); i++) {
 //            model.addRow(dsChungcu.get(i).getObj());
 //        }
         tblChitietGD.setModel(model);
     }
+
     public void loadTblBCCanho() {
 //        dsChungcu = (ArrayList<Chungcu>) chungcuDAO.getAll();s
-        String[] title = {"Tòa nhà", "Số căn hộ cho thuê", "Số căn hộ đã bán","Số còn lại"};
+        String[] title = {"Tòa nhà", "Số căn hộ cho thuê", "Số căn hộ đã bán", "Số còn lại"};
         DefaultTableModel model = new DefaultTableModel(null, title);
 //        for (int i = 0; i < dsChungcu.size(); i++) {
 //            model.addRow(dsChungcu.get(i).getObj());
 //        }
         tblBcCanho.setModel(model);
     }
+
     public void loadTblBCDoanhthu() {
 //        dsChungcu = (ArrayList<Chungcu>) chungcuDAO.getAll();s
         String[] title = {"Tòa nhà", "Tống số tiền"};
@@ -96,42 +109,81 @@ public class QLMain extends javax.swing.JFrame {
 //        }
         tblBcDoanhthu.setModel(model);
     }
+
     public void loadTblKH() {
 //        dsK = (ArrayList<Chungcu>) chungcuDAO.getAll();
-        String[] title = {"Mã KH", "Tên KH", "Địa chỉ", "SĐT", "Email", "CMND", "Ngày sinh","Giới tính","Số tiền GD","Mô tả"};
+        String[] title = {"Mã KH", "Tên KH", "Địa chỉ", "SĐT", "Email", "CMND", "Ngày sinh", "Giới tính", "Số tiền GD", "Mô tả"};
         DefaultTableModel model = new DefaultTableModel(null, title);
 //        for (int i = 0; i < dsChungcu.size(); i++) {
 //            model.addRow(dsChungcu.get(i).getObj());
 //        }
         tblKH.setModel(model);
     }
+
     public void loadTblToanha() {
         dsToanha = (ArrayList<Toanha>) toanhaDAO.getAll();
-        String[] title = {"Mã Tòa nhà", "Tên Tòa nhà", "Địa chỉ", "SĐT BQL", "Số tầng", "Số căn hộ", "Tổng diện tích","Chung cư","Ngày xây dựng","Ngày hoàn thành","Mô tả"};
+        String[] title = {"Mã Tòa nhà", "Tên Tòa nhà", "Địa chỉ", "SĐT BQL", "Số tầng", "Số căn hộ", "Tổng diện tích", "Chung cư", "Ngày xây dựng", "Ngày hoàn thành", "Mô tả"};
         DefaultTableModel model = new DefaultTableModel(null, title);
-//        for (int i = 0; i < dsChungcu.size(); i++) {
-//            model.addRow(dsChungcu.get(i).getObj());
-//        }
+        cbToanha.removeAllItems();
+        for (int i = 0; i < dsToanha.size(); i++) {
+            model.addRow(dsToanha.get(i).getObj());
+             cbToanha.addItem(dsToanha.get(i).getTenToanha().trim());
+        }
         tblToanha.setModel(model);
     }
+
     public void loadTblCanho() {
         dsCanho = (ArrayList<Canho>) canhoDAO.getAll();
-        String[] title = {"Mã Căn hộ", "Tên Tòa nhà", "Số nhà", "Diện tích", "Số phòng", "Giá bán", "Giá thuê","Mô tả"};
+        String[] title = {"Mã Căn hộ", "Tên Tòa nhà", "Số nhà", "Diện tích", "Số phòng", "Giá bán", "Giá thuê", "Mô tả"};
         DefaultTableModel model = new DefaultTableModel(null, title);
 //        for (int i = 0; i < dsChungcu.size(); i++) {
 //            model.addRow(dsChungcu.get(i).getObj());
 //        }
         tblCanho.setModel(model);
     }
+
     public void loadTblNhanvien() {
         dsCanho = (ArrayList<Canho>) canhoDAO.getAll();
-        String[] title = {"Mã Nhân viên","Tòa nhà" ,"Hộ tên", "Địa chỉ", "SĐT", "Ngày sinh", "CMND", "Lương","Ngày bắt đầu","Mô tả"};
+        String[] title = {"Mã Nhân viên", "Tòa nhà", "Hộ tên", "Địa chỉ", "SĐT", "Ngày sinh", "CMND", "Lương", "Ngày bắt đầu", "Mô tả"};
         DefaultTableModel model = new DefaultTableModel(null, title);
 //        for (int i = 0; i < dsChungcu.size(); i++) {
 //            model.addRow(dsChungcu.get(i).getObj());
 //        }
         tblNhanvien.setModel(model);
     }
+
+    public void showMsg(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
+    }
+
+    public void resetForm() {
+        txtChuDautu.setText("");
+        txtDiachi.setText("");
+        txtDiachiToanha.setText("");
+        txtDientich.setText("");
+        txtDientichCanho.setText("");
+        txtDientichToanha.setText("");
+        txtGiaban.setText("");
+        txtGiathue.setText("");
+        txtLuong.setText("");
+        txtNVCmnd.setText("");
+        txtNVDiachi.setText("");
+        txtNVHoten.setText("");
+        txtNVSdt.setText("");
+        txtSdtToanha.setText("");
+        txtSoCanho.setText("");
+        txtSoToanha.setText("");
+        txtSonha.setText("");
+        txtSophong.setText("");
+        txtSotang.setText("");
+        txtTenChungcu.setText("");
+        txtTenToanha.setText("");
+        taMota.setText("");
+        taMotaCanho.setText("");
+        taMotaToanha.setText("");
+        taNVMota.setText("");
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -188,14 +240,14 @@ public class QLMain extends javax.swing.JFrame {
         txtSoCanho = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         taMotaToanha = new javax.swing.JTextArea();
-        dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
-        dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
+        dcNgayXD = new datechooser.beans.DateChooserCombo();
+        dcNgayHT = new datechooser.beans.DateChooserCombo();
         txtDientichToanha = new javax.swing.JTextField();
         btnThemToanha = new javax.swing.JButton();
         btnSuaToanha = new javax.swing.JButton();
         btnXoaToanha = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbChungcu = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblCanho = new javax.swing.JTable();
@@ -206,7 +258,7 @@ public class QLMain extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cbToanha = new javax.swing.JComboBox<>();
         txtSonha = new javax.swing.JTextField();
         txtDientichCanho = new javax.swing.JTextField();
         txtSophong = new javax.swing.JTextField();
@@ -332,6 +384,11 @@ public class QLMain extends javax.swing.JFrame {
         });
 
         tbnSua.setText("Sửa");
+        tbnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbnSuaActionPerformed(evt);
+            }
+        });
 
         tbnXoa.setText("Xóa");
         tbnXoa.addActionListener(new java.awt.event.ActionListener() {
@@ -446,6 +503,11 @@ public class QLMain extends javax.swing.JFrame {
         jScrollPane4.setViewportView(taMotaToanha);
 
         btnThemToanha.setText("Thêm");
+        btnThemToanha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemToanhaActionPerformed(evt);
+            }
+        });
 
         btnSuaToanha.setText("Sửa");
         btnSuaToanha.addActionListener(new java.awt.event.ActionListener() {
@@ -455,10 +517,20 @@ public class QLMain extends javax.swing.JFrame {
         });
 
         btnXoaToanha.setText("Xóa");
+        btnXoaToanha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaToanhaActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Chung cư");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbChungcu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbChungcu.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbChungcuItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -492,7 +564,7 @@ public class QLMain extends javax.swing.JFrame {
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel13)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(dcNgayXD, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(btnThemToanha)
                                         .addGap(38, 38, 38)
@@ -514,11 +586,11 @@ public class QLMain extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(dcNgayHT, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(46, 46, 46)
                                 .addComponent(jLabel8)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(cbChungcu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtDientichToanha, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1361, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -553,11 +625,11 @@ public class QLMain extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14)
                             .addComponent(jLabel13)
-                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dcNgayXD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dcNgayHT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel8)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cbChungcu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnThemToanha)
@@ -598,7 +670,12 @@ public class QLMain extends javax.swing.JFrame {
 
         jLabel22.setText("Mô tả");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tòa A1", "Tòa A2", "Item 3", "Item 4" }));
+        cbToanha.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tòa A1", "Tòa A2", "Item 3", "Item 4" }));
+        cbToanha.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbToanhaItemStateChanged(evt);
+            }
+        });
 
         taMotaCanho.setColumns(20);
         taMotaCanho.setRows(5);
@@ -627,7 +704,7 @@ public class QLMain extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbToanha, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -669,7 +746,7 @@ public class QLMain extends javax.swing.JFrame {
                     .addComponent(jLabel18)
                     .addComponent(jLabel19)
                     .addComponent(jLabel20)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbToanha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel21)
                     .addComponent(txtSonha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDientichCanho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1202,18 +1279,57 @@ public class QLMain extends javax.swing.JFrame {
 
     private void tbnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbnXoaActionPerformed
         // TODO add your handling code here:
+        int selectRow = tblChungcu.getSelectedRow();
+        if (selectRow > -1) {
+            boolean isdel = (boolean) chungcuDAO.delete(dsChungcu.get(selectRow).getIdChungcu());
+            if (isdel) {
+                JOptionPane.showMessageDialog(this, "Xóa thông tin Chung cư thành công");
+                loadTblChungcu();
+            } else {
+                JOptionPane.showMessageDialog(this, "Xóa thông tin Chung cư không thành công");
+            }
+
+        }
     }//GEN-LAST:event_tbnXoaActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        // TODO add your handling code here:
-        Chungcu chungcu = new Chungcu();
-        int soToanha, tongDientich;
         try {
+            int soToanha = 0, tongDientich = 0;
             soToanha = Integer.parseInt(txtSoToanha.getText());
             tongDientich = Integer.parseInt(txtDientich.getText());
-        } catch (Exception ex) {
 
+            String tenChungcu, diachiChungcu, chuDautu, mota;
+            tenChungcu = txtTenChungcu.getText().trim();
+            diachiChungcu = txtDiachi.getText().trim();
+            chuDautu = txtChuDautu.getText().trim();
+            mota = taMota.getText().trim();
+            if (tenChungcu.equals("") || diachiChungcu.equals("") || chuDautu.equals("")) {
+                showMsg("Yêu cầu nhập đầy đủ thông tin");
+            } else {
+                Chungcu chungcu = new Chungcu();
+                chungcu.setTenChungcu(tenChungcu);
+                chungcu.setDiachi(diachiChungcu);
+                chungcu.setChuDautu(chuDautu);
+                chungcu.setMota(mota);
+                chungcu.setSoToanha(soToanha);
+                chungcu.setTongDientich(tongDientich);
+                try {
+                    boolean success = (boolean) chungcuDAO.add(chungcu);
+                    if (success) {
+                        showMsg("Thêm chung cư thành công");
+                        loadTblChungcu();
+                        resetForm();
+                    } else {
+                        showMsg("Thêm chung cư không thành công");
+                    }
+                } catch (Exception ex) {
+                    showMsg("Có lỗi xảy ra");
+                }
+            }
+        } catch (Exception ex) {
+            showMsg("Nhập đúng kiểu dữ liệu cho số Tòa nhà và Tổng diện tích");
         }
+
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaToanhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaToanhaActionPerformed
@@ -1227,6 +1343,94 @@ public class QLMain extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void tbnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbnSuaActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_tbnSuaActionPerformed
+
+    private void btnThemToanhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemToanhaActionPerformed
+        // TODO add your handling code here:
+        String tenToanha, dcToanha, sdtToanha, mota;
+        tenToanha = txtTenToanha.getText().trim();
+        dcToanha = txtDiachiToanha.getText().trim();
+        sdtToanha = txtSdtToanha.getText().trim();
+        mota = taMotaToanha.getText().trim();
+
+        if (tenToanha.equals("") || dcToanha.equals("") || sdtToanha.equals("")) {
+            showMsg("Yêu cầu nhập đầy đủ thông tin");
+        } else {
+            try {
+//            showMsg(dcNgayXD.getText());
+                Date dateXD = Common.parserDate(dcNgayXD.getText());
+                Date dateHT = Common.parserDate(dcNgayHT.getText());
+                if (indexChungcu < 0) {
+                    showMsg("Yêu cầu chọn Chung cư");
+                }
+                int soTang, soCanho, tongDientich;
+                try {
+                    soCanho = Integer.parseInt(txtSoCanho.getText());
+                    soTang = Integer.parseInt(txtSotang.getText());
+                    tongDientich = Integer.parseInt(txtDientichToanha.getText());
+
+                    Toanha toanha = new Toanha();
+                    toanha.setTenToanha(tenToanha);
+                    toanha.setDiachi(dcToanha);
+                    toanha.setSdtQuanly(sdtToanha);
+                    toanha.setMota(mota);
+                    toanha.setSoTang(soTang);
+                    toanha.setSoCanho(soCanho);
+                    toanha.setTongDientich(tongDientich);
+                    toanha.setNgayXaydung(dateXD);
+                    toanha.setNgayHoanthanh(dateHT);
+                    toanha.setChungcu(dsChungcu.get(indexChungcu));
+                    try {
+                        boolean success = (boolean) toanhaDAO.add(toanha);
+                        if (success) {
+                            showMsg("Thêm Tòa nhà thành công");
+                            loadTblToanha();
+                            resetForm();
+                        } else {
+                            showMsg("Thêm Tòa nhà không thành công");
+                        }
+                    } catch (Exception ex) {
+                        showMsg("Có lỗi xảy ra");
+                    }
+                } catch (Exception ex) {
+                    showMsg("Nhập đúng kiểu dữ liệu");
+                }
+            } catch (ParseException ex) {
+                showMsg("Nhập đúng kiểu dữ liệu");
+            }
+        }
+    }//GEN-LAST:event_btnThemToanhaActionPerformed
+
+    private void cbChungcuItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbChungcuItemStateChanged
+        // TODO add your handling code here:
+        indexChungcu = cbChungcu.getSelectedIndex();
+        System.out.println("indexChungcu: " + indexChungcu);
+    }//GEN-LAST:event_cbChungcuItemStateChanged
+
+    private void cbToanhaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbToanhaItemStateChanged
+        // TODO add your handling code here:
+        indexToanha = cbToanha.getSelectedIndex();
+        System.out.println("indexChungcu: " + indexToanha);
+    }//GEN-LAST:event_cbToanhaItemStateChanged
+
+    private void btnXoaToanhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaToanhaActionPerformed
+        // TODO add your handling code here:
+        int selectRow = tblToanha.getSelectedRow();
+        if (selectRow > -1) {
+            boolean isdel = (boolean) toanhaDAO.delete(dsToanha.get(selectRow).getIdToanha());
+            if (isdel) {
+                JOptionPane.showMessageDialog(this, "Xóa thông tin Tòa nhà thành công");
+                loadTblToanha();
+            } else {
+                JOptionPane.showMessageDialog(this, "Xóa thông tin Tòa nhà không thành công");
+            }
+
+        }
+    }//GEN-LAST:event_btnXoaToanhaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1269,8 +1473,8 @@ public class QLMain extends javax.swing.JFrame {
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnThemToanha;
     private javax.swing.JButton btnXoaToanha;
-    private datechooser.beans.DateChooserCombo dateChooserCombo1;
-    private datechooser.beans.DateChooserCombo dateChooserCombo2;
+    private javax.swing.JComboBox<String> cbChungcu;
+    private javax.swing.JComboBox<String> cbToanha;
     private datechooser.beans.DateChooserCombo dateChooserCombo3;
     private datechooser.beans.DateChooserCombo dateChooserCombo4;
     private datechooser.beans.DateChooserCombo dateChooserCombo5;
@@ -1280,6 +1484,8 @@ public class QLMain extends javax.swing.JFrame {
     private datechooser.beans.DateChooserCombo dateChooserCombo9;
     private datechooser.beans.DateChooserDialog dateChooserDialog1;
     private datechooser.beans.DateChooserDialog dateChooserDialog2;
+    private datechooser.beans.DateChooserCombo dcNgayHT;
+    private datechooser.beans.DateChooserCombo dcNgayXD;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -1291,8 +1497,6 @@ public class QLMain extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JComboBox<String> jComboBox5;

@@ -29,7 +29,7 @@ public class ChitietGiaodichDAO extends InterfaceDAO {
     public Object add(Object ob) {
         if (ob instanceof ChitietGiaodich) {
             ChitietGiaodich chitietGiaodich = (ChitietGiaodich) ob;
-            String sql = "INSERT INTO [dbo].[chitiet_chitietGiaodich]\n"
+            String sql = "INSERT INTO [QL_Chungcu].[dbo].[chitiet_chitietGiaodich]\n"
                     + "           ([id_chitietGiaodich]\n"
                     + "           ,[id_canho])"
                     + "     VALUES(?,?)";
@@ -49,7 +49,7 @@ public class ChitietGiaodichDAO extends InterfaceDAO {
     }
 
     public Object delete(ChitietGiaodich chitietGiaodich) {
-        String sql = "delete from [dbo].[chitiet_giaodich] where id_chitietGiaodich=? and id_canho = ?";
+        String sql = "delete from [QL_Chungcu].[dbo].[chitiet_chitietGiaodich] where id_chitietGiaodich=? and id_canho = ?";
         try {
             PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
             ps.setInt(1, chitietGiaodich.getGiaodich().getIdGiaodich());
@@ -66,7 +66,7 @@ public class ChitietGiaodichDAO extends InterfaceDAO {
     public Object update(Object ob) {
         if (ob instanceof ChitietGiaodich) {
             ChitietGiaodich chitietGiaodich = (ChitietGiaodich) ob;
-            String sql = "UPDATE [dbo].[chitiet_giaodich]\n"
+            String sql = "UPDATE [QL_Chungcu].[dbo].[chitiet_chitietGiaodich]\n"
                     + "   SET [id_giaodich] = ? \n"
                     + "      ,[id_canho] = ? "
                     + " WHERE id_chitiet_giaodich=? and id_canho =?";
@@ -87,7 +87,7 @@ public class ChitietGiaodichDAO extends InterfaceDAO {
     @Override
     public Object getAll() {
         ArrayList<ChitietGiaodich> arr = null;
-        String sql = "select * from chitiet_giaodich";
+        String sql = "select * from [QL_Chungcu].[dbo].[chitiet_chitietGiaodich]";
         ResultSet rs = myConnect.executeQuery(sql);
         GiaodichDAO giaodichDAO = new GiaodichDAO();
         CanhoDAO canhoDAO = new CanhoDAO();
@@ -111,7 +111,7 @@ public class ChitietGiaodichDAO extends InterfaceDAO {
     @Override
     public Object getId(int id) {
         ChitietGiaodich chitietGiaodich = null;
-        String sql = "select * from chitietGiaodich where id_chitietGiaodich=" + id;
+        String sql = "select * from [QL_Chungcu].[dbo].[chitiet_chitietGiaodich] where id_chitietGiaodich=" + id;
         ResultSet rs = myConnect.executeQuery(sql);
         GiaodichDAO giaodichDAO = new GiaodichDAO();
         CanhoDAO canhoDAO = new CanhoDAO();

@@ -28,7 +28,7 @@ public class CanhoDAO extends InterfaceDAO {
     public Object add(Object ob) {
         if (ob instanceof Canho) {
             Canho canho = (Canho) ob;
-            String sql = "INSERT INTO [dbo].[canho]\n"
+            String sql = "INSERT INTO [QL_Chungcu].[dbo].[canho]\n"
                     + "           ([id_toanha]\n"
                     + "           ,[so_nha]\n"
                     + "           ,[dientich]\n"
@@ -59,7 +59,7 @@ public class CanhoDAO extends InterfaceDAO {
 
     @Override
     public Object delete(int id) {
-        String sql = "delete from [dbo].[canho] where id_canho=?";
+        String sql = "delete from [QL_Chungcu].[dbo].[canho] where id_canho=?";
         try {
             PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
             ps.setInt(1, id);
@@ -74,7 +74,7 @@ public class CanhoDAO extends InterfaceDAO {
     public Object update(Object ob) {
         if (ob instanceof Canho) {
             Canho canho = (Canho) ob;
-            String sql = "UPDATE [dbo].[canho]\n"
+            String sql = "UPDATE [QL_Chungcu].[dbo].[canho] \n"
                     + "   SET [id_toanha] = ?\n"
                     + "      ,[so_nha] = ?\n"
                     + "      ,[dientich] = ?\n"
@@ -104,7 +104,7 @@ public class CanhoDAO extends InterfaceDAO {
     @Override
     public Object getAll() {
         ArrayList<Canho> arr = null;
-        String sql = "select * from Canho";
+        String sql = "select * from [QL_Chungcu].[dbo].[canho]";
         ResultSet rs = myConnect.executeQuery(sql);
         ToanhaDAO toanhaDAO = new ToanhaDAO();
         if (rs != null) {
@@ -115,7 +115,7 @@ public class CanhoDAO extends InterfaceDAO {
                     canho = new Canho();
                     canho.setIdCanho(rs.getInt(1));
                     canho.setToanha((Toanha) toanhaDAO.getId(rs.getInt(2)));
-                    canho.setSoNha(rs.getNString(3));
+                    canho.setSoNha(rs.getString(3));
                     canho.setTongDientich(rs.getInt(4));
                     canho.setSoPhong(rs.getInt(5));
                     canho.setGiaban(rs.getDouble(6));
@@ -133,7 +133,7 @@ public class CanhoDAO extends InterfaceDAO {
     @Override
     public Object getId(int id) {
         Canho canho = null;
-        String sql = "select * from canho where id_canho=" + id;
+        String sql = "select * from [QL_Chungcu].[dbo].[canho] where id_canho=" + id;
         ResultSet rs = myConnect.executeQuery(sql);
         ToanhaDAO toanhaDAO = new ToanhaDAO();
         try {

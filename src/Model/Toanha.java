@@ -7,12 +7,16 @@ package Model;
 
 import java.util.ArrayList;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Vector;
+import utils.Common;
 
 /**
  *
  * @author PTIT
  */
 public class Toanha {
+
     private int idToanha;
     private String tenToanha;
     private int soCanho;
@@ -139,5 +143,21 @@ public class Toanha {
     public void setChungcu(Chungcu chungcu) {
         this.chungcu = chungcu;
     }
-    
+
+    public Vector<String> getObj() {
+        Vector<String> vt = new Vector<>();
+        
+        vt.add(idToanha + "");
+        vt.add(tenToanha);
+        vt.add(diachi);
+        vt.add(sdtQuanly);
+        vt.add(soCanho + "");
+        vt.add(soTang + "");
+        vt.add(tongDientich + "");
+        vt.add(chungcu.getTenChungcu());
+        vt.add(Common.formatDate(ngayXaydung));
+        vt.add(Common.formatDate(ngayHoanthanh));
+        vt.add(mota);
+        return vt;
+    }
 }

@@ -29,7 +29,7 @@ public class NhanvienDAO extends InterfaceDAO {
     public Object add(Object ob) {
         if (ob instanceof Nhanvien) {
             Nhanvien nhanvien = (Nhanvien) ob;
-            String sql = "INSERT INTO [dbo].[nhanvien]\n"
+            String sql = "INSERT INTO [QL_Chungcu].[dbo].[nhanvien]\n"
                     + "           ([hoten]\n"
                     + "           ,[diachi]\n"
                     + "           ,[sdt]\n"
@@ -64,7 +64,7 @@ public class NhanvienDAO extends InterfaceDAO {
 
     @Override
     public Object delete(int id) {
-        String sql = "delete from [dbo].[nhanvien] where id_nhanvien=?";
+        String sql = "delete from [QL_Chungcu].[dbo].[nhanvien] where id_nhanvien=?";
         try {
             PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
             ps.setInt(1, id);
@@ -79,7 +79,7 @@ public class NhanvienDAO extends InterfaceDAO {
     public Object update(Object ob) {
         if (ob instanceof Nhanvien) {
             Nhanvien nhanvien = (Nhanvien) ob;
-            String sql = "UPDATE [dbo].[nhanvien]\n"
+            String sql = "UPDATE [QL_Chungcu].[dbo].[nhanvien] \n"
                     + "   SET [hoten] = ? \n"
                     + "      ,[diachi] = ? \n"
                     + "      ,[sdt] = ? \n"
@@ -113,7 +113,7 @@ public class NhanvienDAO extends InterfaceDAO {
     @Override
     public Object getAll() {
         ArrayList<Nhanvien> arr = null;
-        String sql = "select * from Nhanvien";
+        String sql = "select * from [QL_Chungcu].[dbo].[nhanvien]";
         ResultSet rs = myConnect.executeQuery(sql);
         ToanhaDAO toanhaDAO = new ToanhaDAO();
         if (rs != null) {
@@ -144,7 +144,7 @@ public class NhanvienDAO extends InterfaceDAO {
     @Override
     public Object getId(int id) {
         Nhanvien nhanvien = null;
-        String sql = "select * from nhanvien where id_nhanvien=" + id;
+        String sql = "select * from [QL_Chungcu].[dbo].[nhanvien] where id_nhanvien=" + id;
         ResultSet rs = myConnect.executeQuery(sql);
         ToanhaDAO toanhaDAO = new ToanhaDAO();
         try {

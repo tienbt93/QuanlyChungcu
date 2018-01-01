@@ -3,21 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/DAO/KhachhangDAO.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/Model/Chungcu.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/utils/Exceptions.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/Model/Giaodich.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/DAO/CanhoDAO.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/DAO/ChungcuDAO.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/DAO/ToanhaDAO.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/DAO/ChitietGiaodichDAO.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/DAO/NhanvienDAO.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/Interface/InterfaceDAO.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/DbConnect/MyConnect.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/Model/Canho.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/Model/Khachhang.java</file>
             <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/View/QLMain.java</file>
-            <file>file:/C:/Users/trant/Documents/NetBeansProjects/QuanlyChungcu/src/DAO/GiaodichDAO.java</file>
         </group>
     </open-files>
 </project-private>
