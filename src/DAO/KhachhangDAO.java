@@ -87,6 +87,7 @@ public class KhachhangDAO extends InterfaceDAO {
                     + "      ,[gioitinh] = ?\n"
                     + "      ,[tongtien_giaodich] = ?\n"
                     + "      ,[mota] = ?"
+                    + "      ,[kichhoat] = ?"
                     + " WHERE id_khachhang=? ";
             try {
                 PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
@@ -99,8 +100,9 @@ public class KhachhangDAO extends InterfaceDAO {
                 ps.setShort(7, khachhang.getGioitinh());
                 ps.setDouble(8, khachhang.getTongtienGiaodich());
                 ps.setString(9, khachhang.getMota());
-                ps.setInt(10, khachhang.getIdKhachhang());
-                return 0 <= ps.executeUpdate();
+                ps.setInt(10, khachhang.getKichhoat());
+                ps.setInt(11, khachhang.getIdKhachhang());
+                return 0 < ps.executeUpdate();
             } catch (SQLException ex) {
                 Logger.getLogger(KhachhangDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -111,7 +113,7 @@ public class KhachhangDAO extends InterfaceDAO {
     @Override
     public Object getAll() {
         ArrayList<Khachhang> arr = null;
-        String sql = "select * from [QL_Chungcu].[dbo].[khachhang]";
+        String sql = "select * from [QL_Chungcu].[dbo].[khachhang] where [kichhoat] = 1";
         ResultSet rs = myConnect.executeQuery(sql);
         ToanhaDAO toanhaDAO = new ToanhaDAO();
         if (rs != null) {
@@ -165,6 +167,37 @@ public class KhachhangDAO extends InterfaceDAO {
         }
 
         return khachhang;
+    }
+
+    @Override
+    public Object getAllByText(String searchText) {
+        ArrayList<Khachhang> arr = null;
+        String sql = "select * from [QL_Chungcu].[dbo].[khachhang] where LOWER (hoten) like '%"+searchText.toLowerCase()+"%' ";
+        ResultSet rs = myConnect.executeQuery(sql);
+        ToanhaDAO toanhaDAO = new ToanhaDAO();
+        if (rs != null) {
+            arr = new ArrayList<>();
+            try {
+                Khachhang khachhang = null;
+                while (rs.next()) {
+                    khachhang = new Khachhang();
+                    khachhang.setIdKhachhang(rs.getInt(1));
+                    khachhang.setTenKhachhang((rs.getString(2)));
+                    khachhang.setDiachi(rs.getNString(3));
+                    khachhang.setSdt(rs.getString(4));
+                    khachhang.setEmail(rs.getString(5));
+                    khachhang.setCmnd(rs.getString(6));
+                    khachhang.setNgaysinh(rs.getDate(7));
+                    khachhang.setGioitinh(rs.getShort(8));
+                    khachhang.setTongtienGiaodich(rs.getDouble(9));
+                    khachhang.setMota(rs.getNString(10));
+                    arr.add(khachhang);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(KhachhangDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return arr;
     }
 
 }

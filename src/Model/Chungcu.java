@@ -21,11 +21,12 @@ public class Chungcu {
     private String chuDautu;
     private String mota;
     private ArrayList<Toanha> listToanha;
+    private short kichhoat;
 
     public Chungcu() {
     }
 
-    public Chungcu(int idChungcu, String tenChungcu, int soToanha, int tongDientich, String diachi, String chuDautu, String mota, ArrayList<Toanha> listToanha) {
+    public Chungcu(int idChungcu, String tenChungcu, int soToanha, int tongDientich, String diachi, String chuDautu, String mota, ArrayList<Toanha> listToanha, short kichhoat) {
         this.idChungcu = idChungcu;
         this.tenChungcu = tenChungcu;
         this.soToanha = soToanha;
@@ -34,8 +35,17 @@ public class Chungcu {
         this.chuDautu = chuDautu;
         this.mota = mota;
         this.listToanha = listToanha;
+        this.kichhoat = kichhoat;
     }
 
+    public short getKichhoat() {
+        return kichhoat;
+    }
+
+    public void setKichhoat(short kichhoat) {
+        this.kichhoat = kichhoat;
+    }
+   
     public int getIdChungcu() {
         return idChungcu;
     }

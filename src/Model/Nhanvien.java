@@ -6,6 +6,8 @@
 package Model;
 
 import java.sql.Date;
+import java.util.Vector;
+import utils.Common;
 
 /**
  *
@@ -23,11 +25,12 @@ public class Nhanvien {
     private Date ngayBatdau;
     private Toanha toanha;
     private short gioitinh;
+    private short kichhoat;
 
     public Nhanvien() {
     }
 
-    public Nhanvien(int idNhanvien, String tenNhanvien, String diachi, String sdt, Date ngaysinh, String cmnd, double luong, String mota, Date ngayBatdau, Toanha toanha, short gioitinh) {
+    public Nhanvien(int idNhanvien, String tenNhanvien, String diachi, String sdt, Date ngaysinh, String cmnd, double luong, String mota, Date ngayBatdau, Toanha toanha, short gioitinh, short kichhoat) {
         this.idNhanvien = idNhanvien;
         this.tenNhanvien = tenNhanvien;
         this.diachi = diachi;
@@ -39,7 +42,18 @@ public class Nhanvien {
         this.ngayBatdau = ngayBatdau;
         this.toanha = toanha;
         this.gioitinh = gioitinh;
+        this.kichhoat = kichhoat;
     }
+
+    public short getKichhoat() {
+        return kichhoat;
+    }
+
+    public void setKichhoat(short kichhoat) {
+        this.kichhoat = kichhoat;
+    }
+
+    
 
     public short getGioitinh() {
         return gioitinh;
@@ -128,5 +142,18 @@ public class Nhanvien {
     public void setToanha(Toanha toanha) {
         this.toanha = toanha;
     }
-    
+    public Vector<String> getObj(){
+        Vector<String> vt= new Vector<>();
+        vt.add(idNhanvien+"");
+        vt.add(toanha.getTenToanha().trim());
+        vt.add(tenNhanvien+"");
+        vt.add(diachi);
+        vt.add(sdt);
+        vt.add(Common.formatDate(ngaysinh));
+        vt.add(cmnd);
+        vt.add(Common.formatMoney(luong));
+        vt.add(Common.formatDate(ngayBatdau));
+        vt.add(mota);
+        return vt;
+    }
 }

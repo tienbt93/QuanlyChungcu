@@ -6,6 +6,7 @@
 package utils;
 
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -24,5 +25,9 @@ public class Common {
         Long longTime=dateCon.getTime();
         Date date1=new Date(longTime);
         return date1 ;
+    }
+    public static String formatMoney(double money){
+        DecimalFormat formatter = new DecimalFormat("###,###,###,###");
+        return formatter.format(money)+" VNĐ";
     }
 }

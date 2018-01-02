@@ -7,6 +7,8 @@ package Model;
 
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.Vector;
+import utils.Common;
 
 /**
  *
@@ -117,6 +119,20 @@ public class Giaodich {
 
     public void setKhachhang(Khachhang khachhang) {
         this.khachhang = khachhang;
+    }
+
+    public Vector getObj() {
+        String[] title = {"Mã GD", "Tên KH", "Loại giao dịch", "Số lượng", "Ngày lập", "Nhân viên lập", "Tổng số tiền", "Mô tả"};
+        Vector<String> vt= new Vector<>();
+        vt.add(idGiaodich+"");
+        vt.add(khachhang.getTenKhachhang().trim());
+        vt.add(loaiGiaodich==0?"Mua":"Thuê");
+        vt.add(soluong+"");
+        vt.add(Common.formatDate(ngaylapGiaodich));
+        vt.add(nhanvien.getTenNhanvien().trim());
+        vt.add(Common.formatMoney(tonggia));
+        vt.add(mota);
+        return vt;
     }
     
 }

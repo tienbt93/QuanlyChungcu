@@ -47,14 +47,18 @@ public class GiaodichDAO extends InterfaceDAO {
                 ps.setInt(5, giaodich.getNhanvien().getIdNhanvien());
                 ps.setInt(6, giaodich.getKhachhang().getIdKhachhang());
                 ps.setString(7, giaodich.getMota());
-                return ps.executeUpdate() > 0;
+                if (ps.executeUpdate() > 0) {
+                    return getId(getIdMax());
+                } else {
+                    return null;
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(GiaodichDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            return false;
+            return null;
         } else {
-            return false;
+            return null;
         }
     }
 
@@ -132,6 +136,22 @@ public class GiaodichDAO extends InterfaceDAO {
         return arr;
     }
 
+    public int getIdMax() {
+        String sql = "select MAX( [id_giaodich]) from [QL_Chungcu].[dbo].[giaodich]";
+        ResultSet rs = myConnect.executeQuery(sql);
+        if (rs != null) {
+            try {
+                if (rs.next()) {
+                    return rs.getInt(1);
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(GiaodichDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return 0;
+    }
+
     @Override
     public Object getId(int id) {
         Giaodich giaodich = null;
@@ -151,14 +171,17 @@ public class GiaodichDAO extends InterfaceDAO {
                 giaodich.setNhanvien((Nhanvien) nhanvienDAO.getId(rs.getInt(6)));
                 giaodich.setKhachhang((Khachhang) khachhangDAO.getId(rs.getInt(7)));
                 giaodich.setMota(rs.getNString(8));
-                giaodich.setMota(rs.getNString(9));
-
             }
         } catch (SQLException ex) {
             Logger.getLogger(GiaodichDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return giaodich;
+    }
+
+    @Override
+    public Object getAllByText(String searchText) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

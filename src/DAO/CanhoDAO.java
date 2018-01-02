@@ -82,6 +82,8 @@ public class CanhoDAO extends InterfaceDAO {
                     + "      ,[gia_ban] = ?\n"
                     + "      ,[gia_thue] = ?\n"
                     + "      ,[mota] = ?"
+                    + "      ,[trangthai] = ?"
+                    + ",[kichhoat] = ?"
                     + " WHERE id_canho=? ";
             try {
                 PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
@@ -92,7 +94,9 @@ public class CanhoDAO extends InterfaceDAO {
                 ps.setDouble(5, canho.getGiaban());
                 ps.setDouble(6, canho.getGiathue());
                 ps.setString(7, canho.getMota());
-                ps.setInt(8, canho.getIdCanho());
+                ps.setInt(8, canho.getTrangthai());
+                ps.setInt(9, canho.getKichhoat());
+                ps.setInt(10, canho.getIdCanho());
                 return 0 <= ps.executeUpdate();
             } catch (SQLException ex) {
                 Logger.getLogger(CanhoDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,7 +108,7 @@ public class CanhoDAO extends InterfaceDAO {
     @Override
     public Object getAll() {
         ArrayList<Canho> arr = null;
-        String sql = "select * from [QL_Chungcu].[dbo].[canho]";
+        String sql = "select * from [QL_Chungcu].[dbo].[canho] where [kichhoat] = 1";
         ResultSet rs = myConnect.executeQuery(sql);
         ToanhaDAO toanhaDAO = new ToanhaDAO();
         if (rs != null) {
@@ -121,6 +125,7 @@ public class CanhoDAO extends InterfaceDAO {
                     canho.setGiaban(rs.getDouble(6));
                     canho.setGiathue(rs.getDouble(7));
                     canho.setMota(rs.getNString(8));
+                    canho.setTrangthai(rs.getShort(9));
                     arr.add(canho);
                 }
             } catch (SQLException ex) {
@@ -147,13 +152,43 @@ public class CanhoDAO extends InterfaceDAO {
                 canho.setGiaban(rs.getDouble(6));
                 canho.setGiathue(rs.getDouble(7));
                 canho.setMota(rs.getNString(8));
-
+                canho.setTrangthai(rs.getShort(9));
             }
         } catch (SQLException ex) {
             Logger.getLogger(CanhoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return canho;
+    }
+
+    @Override
+    public Object getAllByText(String searchText) {
+        ArrayList<Canho> arr = null;
+        String sql = "select * from [QL_Chungcu].[dbo].[canho] where LOWER (so_nha) like '%" + searchText.trim().toLowerCase() + "%' AND trangthai=0";
+        ResultSet rs = myConnect.executeQuery(sql);
+        ToanhaDAO toanhaDAO = new ToanhaDAO();
+        if (rs != null) {
+            arr = new ArrayList<>();
+            try {
+                Canho canho = null;
+                while (rs.next()) {
+                    canho = new Canho();
+                    canho.setIdCanho(rs.getInt(1));
+                    canho.setToanha((Toanha) toanhaDAO.getId(rs.getInt(2)));
+                    canho.setSoNha(rs.getString(3));
+                    canho.setTongDientich(rs.getInt(4));
+                    canho.setSoPhong(rs.getInt(5));
+                    canho.setGiaban(rs.getDouble(6));
+                    canho.setGiathue(rs.getDouble(7));
+                    canho.setMota(rs.getNString(8));
+                    canho.setTrangthai(rs.getShort(9));
+                    arr.add(canho);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CanhoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return arr;
     }
 
 }

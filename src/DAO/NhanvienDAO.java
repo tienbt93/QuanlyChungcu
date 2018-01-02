@@ -88,7 +88,8 @@ public class NhanvienDAO extends InterfaceDAO {
                     + "      ,[luong] = ? \n"
                     + "      ,[ngay_batdau] = ? \n"
                     + "      ,[mota] = ? \n"
-                    + "      ,[id_toanha] = ? "
+                    + "      ,[id_toanha] = ?"
+                    + "      ,[kichhoat] = ?"
                     + " WHERE id_nhanvien=? ";
             try {
                 PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
@@ -101,7 +102,8 @@ public class NhanvienDAO extends InterfaceDAO {
                 ps.setDate(7, nhanvien.getNgayBatdau());
                 ps.setString(8, nhanvien.getMota());
                 ps.setInt(9, nhanvien.getToanha().getIdToanha());
-                ps.setInt(10, nhanvien.getIdNhanvien());
+                ps.setInt(10, nhanvien.getKichhoat());
+                ps.setInt(11, nhanvien.getIdNhanvien());
                 return 0 <= ps.executeUpdate();
             } catch (SQLException ex) {
                 Logger.getLogger(NhanvienDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -113,7 +115,7 @@ public class NhanvienDAO extends InterfaceDAO {
     @Override
     public Object getAll() {
         ArrayList<Nhanvien> arr = null;
-        String sql = "select * from [QL_Chungcu].[dbo].[nhanvien]";
+        String sql = "select * from [QL_Chungcu].[dbo].[nhanvien] where [kichhoat] = 1";
         ResultSet rs = myConnect.executeQuery(sql);
         ToanhaDAO toanhaDAO = new ToanhaDAO();
         if (rs != null) {
@@ -167,6 +169,11 @@ public class NhanvienDAO extends InterfaceDAO {
         }
 
         return nhanvien;
+    }
+
+    @Override
+    public Object getAllByText(String searchText) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

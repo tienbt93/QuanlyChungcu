@@ -6,12 +6,15 @@
 package Model;
 
 import java.sql.Date;
+import java.util.Vector;
+import utils.Common;
 
 /**
  *
  * @author PTIT
  */
 public class Khachhang {
+
     private int idKhachhang;
     private String tenKhachhang;
     private String diachi;
@@ -22,11 +25,12 @@ public class Khachhang {
     private double tongtienGiaodich;
     private String mota;
     private short gioitinh;
+    private short kichhoat;
 
     public Khachhang() {
     }
 
-    public Khachhang(int idKhachhang, String tenKhachhang, String diachi, String sdt, Date ngaysinh, String email, String cmnd, double tongtienGiaodich, String mota, short gioitinh) {
+    public Khachhang(int idKhachhang, String tenKhachhang, String diachi, String sdt, Date ngaysinh, String email, String cmnd, double tongtienGiaodich, String mota, short gioitinh, short kichhoat) {
         this.idKhachhang = idKhachhang;
         this.tenKhachhang = tenKhachhang;
         this.diachi = diachi;
@@ -37,6 +41,15 @@ public class Khachhang {
         this.tongtienGiaodich = tongtienGiaodich;
         this.mota = mota;
         this.gioitinh = gioitinh;
+        this.kichhoat = kichhoat;
+    }
+
+    public short getKichhoat() {
+        return kichhoat;
+    }
+
+    public void setKichhoat(short kichhoat) {
+        this.kichhoat = kichhoat;
     }
 
     public int getIdKhachhang() {
@@ -118,5 +131,28 @@ public class Khachhang {
     public void setGioitinh(short gioitinh) {
         this.gioitinh = gioitinh;
     }
-    
+
+    public Vector<String> getObj() {
+        Vector<String> vt = new Vector<>();
+        vt.add(idKhachhang + "");
+        vt.add(tenKhachhang.trim());
+        vt.add(diachi);
+        vt.add(sdt);
+        vt.add(email);
+        vt.add(cmnd);
+        vt.add(Common.formatDate(ngaysinh));
+        vt.add(gioitinh == 0 ? "Nam" : "Nữ");
+        vt.add(Common.formatMoney(tongtienGiaodich));
+        vt.add(mota);
+        return vt;
+    }
+
+    public Vector getObjSearch() {
+        Vector<String> vt = new Vector<>();
+        vt.add(idKhachhang + "");
+        vt.add(tenKhachhang.trim());
+        vt.add(cmnd);
+        vt.add(Common.formatDate(ngaysinh));
+        return vt;
+    }
 }

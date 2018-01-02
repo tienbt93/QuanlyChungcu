@@ -24,4 +24,5 @@ public abstract class InterfaceDAO {
     public abstract Object getId(int id);
     public abstract Object update(Object ob);
     public abstract Object getAll();
+    public abstract Object getAllByText(String searchText);
 }

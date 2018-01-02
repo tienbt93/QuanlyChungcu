@@ -79,6 +79,7 @@ public class ChungcuDAO extends InterfaceDAO {
                     + "      ,[diachi] = ?\n"
                     + "      ,[chu_dautu] = ?\n"
                     + "      ,[mota] = ?"
+                    + "      ,[kichhoat] = ?"
                     + " WHERE id_chungcu=? ";
             try {
                 PreparedStatement ps = myConnect.getConn().prepareStatement(sql);
@@ -88,7 +89,8 @@ public class ChungcuDAO extends InterfaceDAO {
                 ps.setNString(4, chungcu.getDiachi());
                 ps.setNString(5, chungcu.getChuDautu());
                 ps.setString(6, chungcu.getMota());
-                ps.setInt(7, chungcu.getIdChungcu());
+                ps.setInt(7, chungcu.getKichhoat());
+                ps.setInt(8, chungcu.getIdChungcu());
                 return 0 <= ps.executeUpdate();
             } catch (SQLException ex) {
                 Logger.getLogger(ChungcuDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,7 +102,7 @@ public class ChungcuDAO extends InterfaceDAO {
     @Override
     public Object getAll() {
         ArrayList<Chungcu> arr = null;
-        String sql = "select * from [QL_Chungcu].[dbo].[chungcu]";
+        String sql = "select * from [QL_Chungcu].[dbo].[chungcu] where [kichhoat] = 1 ";
         ResultSet rs = myConnect.executeQuery(sql);
         ToanhaDAO toanhaDAO = new ToanhaDAO();
         if (rs != null) {
@@ -148,6 +150,11 @@ public class ChungcuDAO extends InterfaceDAO {
         }
 
         return chungcu;
+    }
+
+    @Override
+    public Object getAllByText(String searchText) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

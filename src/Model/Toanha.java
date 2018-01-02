@@ -29,11 +29,12 @@ public class Toanha {
     private String mota;
     private ArrayList<Canho> danhsachCanho;
     private Chungcu chungcu;
+    private short kichhoat;
 
     public Toanha() {
     }
 
-    public Toanha(int idToanha, String tenToanha, int soCanho, int soTang, int tongDientich, String diachi, String sdtQuanly, Date ngayHoanthanh, Date ngayXaydung, String mota, ArrayList<Canho> danhsachCanho, Chungcu chungcu) {
+    public Toanha(int idToanha, String tenToanha, int soCanho, int soTang, int tongDientich, String diachi, String sdtQuanly, Date ngayHoanthanh, Date ngayXaydung, String mota, ArrayList<Canho> danhsachCanho, Chungcu chungcu, short kichhoat) {
         this.idToanha = idToanha;
         this.tenToanha = tenToanha;
         this.soCanho = soCanho;
@@ -46,7 +47,18 @@ public class Toanha {
         this.mota = mota;
         this.danhsachCanho = danhsachCanho;
         this.chungcu = chungcu;
+        this.kichhoat = kichhoat;
     }
+
+    public short getKichhoat() {
+        return kichhoat;
+    }
+
+    public void setKichhoat(short kichhoat) {
+        this.kichhoat = kichhoat;
+    }
+
+    
 
     public int getIdToanha() {
         return idToanha;
